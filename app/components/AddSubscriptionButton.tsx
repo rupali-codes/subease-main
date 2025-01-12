@@ -39,7 +39,7 @@ type SubscriptionFormData = {
   currency: string;
   renewalDate: Date;
   billingCycle: string;
-  notes: string;
+  note: string;
 };
 
 export default function AddSubscriptionButton() {
@@ -63,37 +63,21 @@ export default function AddSubscriptionButton() {
     getCurrentUser()    
   }, [currentUserId])
 
+  const handleOnFormSubmit = async (data:any) => {
+    const { name, category, price, currency, renewalDate, billingCycle, note } = data;
+    
+    console.log(currentUserId, name, category, price, currency, renewalDate, billingCycle, note)
+    try{
+      const res = await axios.post('/api/subscription/add', {
+        clerkId: currentUserId,
+        ...data
+      })
+      setIsOpen(false);
+      console.log(res)
+    } catch (error) {
+      console.log("ERROR: ", error)
+    }
 
-  const onSubmit = async (data: SubscriptionFormData) => {
-    console.log(data);
-    // try{
-    //   const res = await axios.post('/api/subscription/add', {
-    //     clerkId: currentUserId,
-    //     ...data
-    //   })
-    //   console.log(res)
-    // } catch (error) {
-    //   console.log("ERROR: ", error)
-    // }
-
-    setIsOpen(false);
-  };
-
-  const handleOnFormSubmit = (e:any) => {
-    e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const formData = new FormData(form);
-    const name = formData.get("name") as string;
-    const category = formData.get("category") as string;
-    const price = formData.get("price") as unknown as number;
-    const currency = formData.get("currency") as string;
-    const renewalDate = formData.get("renewalDate") as any;
-    const billingCycle = formData.get(
-      "billingCycle"
-    ) as unknown as string;
-    const notes = formData.get("notes") as string;
-
-    console.log(name, category, price, currency, renewalDate, billingCycle)
   }
 
   const renewalDate = watch("renewalDate");
@@ -114,7 +98,7 @@ export default function AddSubscriptionButton() {
           <DialogTitle>Add New Subscription</DialogTitle>
         </DialogHeader>
         <form
-          onSubmit={handleOnFormSubmit}
+          onSubmit={handleSubmit(handleOnFormSubmit)}
           className="space-y-4"
         >
           <div className="space-y-2">
@@ -276,7 +260,7 @@ export default function AddSubscriptionButton() {
 
           <div className="space-y-2">
             <Label htmlFor="notes">Notes (Optional)</Label>
-            <Textarea id="notes" {...register("notes")} />
+            <Textarea id="note" {...register("note")} />
           </div>
 
           <div className="flex justify-end space-x-2 pt-4">

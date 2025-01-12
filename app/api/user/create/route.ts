@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
     await newUser.save();
     return NextResponse.json({ message: 'User created' }, { status: 201 });
   } else {
+    
     return NextResponse.json({ message: 'User already exists' }, { status: 400 });
   }
 }

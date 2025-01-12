@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     billingCycle,
     note,
   } = await req.json();
-
+  console.log(clerkId)
   await dbConnect();
 
   try {

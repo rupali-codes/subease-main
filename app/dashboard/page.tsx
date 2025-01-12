@@ -137,7 +137,8 @@ type userDataObj = {
 export default function Dashboard() {
   const totalSpending = subscriptions.reduce((sum, sub) => sum + sub.price, 0);
 
-  const { isSignedIn } = useUser();
+  const {isLoaded, isSignedIn } = useUser();
+  const router = useRouter();
   const [userData, setUserData] = useState<userDataObj>({
     clerkId: "",
     email: "",
@@ -167,7 +168,7 @@ export default function Dashboard() {
       if (userData) {
         try {
           const response = await axios.post("/api/user/create", userData);
-          console.log(response)
+          // console.log(response)
           console.log("Saved user data:", userData);
         } catch (error: any) {
           console.error(
@@ -181,8 +182,17 @@ export default function Dashboard() {
     storeUserData()
   }, [userData])
 
-  if (!isSignedIn) {
-    return <p>Loading...</p>;
+  useEffect(() => {
+    async function checkAuth () {
+      if (isLoaded && !isSignedIn) {
+        router.push("/sign-in");
+      }
+    }
+    checkAuth();
+  }, [isLoaded, isSignedIn, router])
+
+  if (!isLoaded || !isSignedIn) {
+    return <p className="text-center">Loading...</p>;
   }
 
   return (

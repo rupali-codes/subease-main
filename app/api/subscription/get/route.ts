@@ -4,8 +4,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const clerkId = searchParams.get("clerkId");
-  
+  const clerkId = searchParams.get("clerkID");
+  console.log(searchParams, clerkId)
   if (!clerkId) {
     return NextResponse.json(
       { message: "clerkId is required" },

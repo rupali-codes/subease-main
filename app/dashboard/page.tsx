@@ -34,7 +34,7 @@ import {
 import { ModeToggle } from "../components/mode-toggle";
 import SocialLinks from "../components/SocialLinks";
 import { UserButton } from "@clerk/nextjs";
-import AddSubscriptionButton from "../components/AddSubscriptionButton"
+import AddSubscriptionButton from "../components/AddSubscriptionButton";
 import Image from "next/image";
 import axios from "axios";
 
@@ -137,12 +137,13 @@ type userDataObj = {
 export default function Dashboard() {
   const totalSpending = subscriptions.reduce((sum, sub) => sum + sub.price, 0);
 
-  const {isLoaded, isSignedIn } = useUser();
+  const { isLoaded, isSignedIn } = useUser();
   const router = useRouter();
   const [userData, setUserData] = useState<userDataObj>({
     clerkId: "",
     email: "",
   });
+  const [subs, setSubs] = useState<any[]>([]);
 
   useEffect(() => {
     async function getCurrentUser() {
@@ -154,7 +155,6 @@ export default function Dashboard() {
           clerkId: res.data.id,
           email: res.data.emailAddresses[0].emailAddress,
         }));
-
       } catch (error) {
         console.log(error);
       }
@@ -170,26 +170,42 @@ export default function Dashboard() {
           const response = await axios.post("/api/user/create", userData);
           // console.log(response)
           console.log("Saved user data:", userData);
+          setSubs(response.data.user?.subscriptions)
         } catch (error: any) {
-          console.error(
-            "Error saving user data:",
-            error.response?.data || error
-          );
+          setSubs(error.response.data.user?.subscriptions)
+          console.log("Error saving user data:", error.response?.data || error);
         }
       }
     }
 
-    storeUserData()
-  }, [userData])
+    storeUserData();
+    async function getSubs() {
+      if (userData) {
+        try {
+          const response = await axios.get("/api/subscription/get", {
+            params: { clerkID: userData.clerkId },
+          });
+          console.log("subscriptions: ", response.data);
+          setSubs(response.data);
+        } catch (error: any) {
+          console.log("Error fetching subscriptions", error);
+        }
+      }
+    }
+   
+    // getSubs();
+  }, [userData]);
+
+  console.log(subs)
 
   useEffect(() => {
-    async function checkAuth () {
+    async function checkAuth() {
       if (isLoaded && !isSignedIn) {
         router.push("/sign-in");
       }
     }
     checkAuth();
-  }, [isLoaded, isSignedIn, router])
+  }, [isLoaded, isSignedIn, router]);
 
   if (!isLoaded || !isSignedIn) {
     return <p className="text-center">Loading...</p>;
@@ -268,8 +284,9 @@ export default function Dashboard() {
               <CardTitle>Subscription List</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {subscriptions.map((sub) => (
+              {
+                subs?.length ? <div className="space-y-4">
+                {subs.map((sub) => (
                   <div
                     key={sub.name}
                     className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-lg border p-4"
@@ -282,10 +299,10 @@ export default function Dashboard() {
                     </div>
                     <div className="flex-shrink-0 text-right">
                       <p className="font-medium">
-                        ${sub.price.toFixed(2)}/month
+                        {sub.currency} {sub.price.toFixed(2)}/{sub.billingCycle}
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        Renews: {sub.renewalDate}
+                        Renews: {new Date(sub.renewalDate).toLocaleDateString()}
                       </p>
                     </div>
                     <div className="flex space-x-2 w-full sm:w-auto mt-2 sm:mt-0">
@@ -306,7 +323,10 @@ export default function Dashboard() {
                     </div>
                   </div>
                 ))}
+              </div> : <div>
+                <p>No Subscriptions Found</p>
               </div>
+              }
             </CardContent>
           </Card>
         </div>

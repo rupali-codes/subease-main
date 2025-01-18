@@ -12,9 +12,8 @@ export async function POST(req: NextRequest) {
   if(!user) {
     const newUser = new User({ clerkId, email });
     await newUser.save();
-    return NextResponse.json({ message: 'User created' }, { status: 201 });
+    return NextResponse.json({ message: 'User created', user: newUser }, { status: 201 });
   } else {
-    
-    return NextResponse.json({ message: 'User already exists' }, { status: 400 });
+    return NextResponse.json({ message: 'User already exists', user }, { status: 400 });
   }
 }

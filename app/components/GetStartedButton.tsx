@@ -12,8 +12,8 @@ interface GetStartedButtonProps {
 const GetStartedButton = ({ text, className }: GetStartedButtonProps) => {
     return (
         <div className={`button-bg flex justify-center gap-1 items-center ${className}`}>
-            
-            <SignInButton>{text}</SignInButton>
+            {text}
+            {/* <SignInButton>{text}</SignInButton> */}
             <IoMdArrowDropright className="text-lg" />
         </div>
     );

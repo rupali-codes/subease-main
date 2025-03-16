@@ -22,7 +22,7 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ message: "Invalid user" }, { status: 400 });
   }
 
-  const updateFields: any = {};
+  const updateFields: Record<string, string | number | Date | undefined> = {};
   if (name !== undefined) updateFields["subscriptions.$.name"] = name;
   if (category !== undefined) updateFields["subscriptions.$.category"] = category;
   if (price !== undefined) updateFields["subscriptions.$.price"] = price;

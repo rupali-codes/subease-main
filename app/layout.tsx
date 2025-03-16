@@ -16,7 +16,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "SubEase",
+  title: "ottidy",
   description: "A subscription-consciousness platform.",
 };
 

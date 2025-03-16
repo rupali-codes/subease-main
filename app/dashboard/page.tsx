@@ -1,15 +1,5 @@
 "use client";
 
-import {
-  Bell,
-  CreditCard,
-  HelpCircle,
-  Lock,
-  LogOut,
-  Plus,
-  Settings,
-  User,
-} from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import {
@@ -23,19 +13,10 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { ModeToggle } from "../components/mode-toggle";
 import SocialLinks from "../components/SocialLinks";
 import { UserButton } from "@clerk/nextjs";
 import AddSubscriptionButton from "../components/AddSubscriptionButton";
-import Image from "next/image";
 import axios from "axios";
 
 import { useUser } from "@clerk/nextjs";
@@ -134,6 +115,17 @@ type userDataObj = {
   email: string;
 };
 
+interface SubsInterface {
+  id: string;
+  name: string;
+  category: string;
+  price: number;
+  currency: string;
+  billingCycle: string;
+  renewalDate: Date;
+  note?: string;
+}
+
 export default function Dashboard() {
   const totalSpending = subscriptions.reduce((sum, sub) => sum + sub.price, 0);
 
@@ -143,7 +135,7 @@ export default function Dashboard() {
     clerkId: "",
     email: "",
   });
-  const [subs, setSubs] = useState<any[]>([]);
+  const [subs, setSubs] = useState<SubsInterface[]>([]);
 
   useEffect(() => {
     async function getCurrentUser() {
@@ -171,65 +163,57 @@ export default function Dashboard() {
           // console.log(response)
           console.log("Saved user data:", userData);
           setSubs(response.data.user?.subscriptions)
-        } catch (error: any) {
-          setSubs(error.response.data.user?.subscriptions)
-          console.log("Error saving user data:", error.response?.data || error);
+        } catch (error: unknown) {
+          if (axios.isAxiosError(error) && error.response) {
+            setSubs(error.response.data.user?.subscriptions || []);
+            console.log("Error saving user data:", error.response.data);
+          } else {
+            console.error("Unexpected error:", error);
+          }
         }
       }
     }
 
     storeUserData();
-    async function getSubs() {
-      if (userData) {
-        try {
-          const response = await axios.get("/api/subscription/get", {
-            params: { clerkID: userData.clerkId },
-          });
-          console.log("subscriptions: ", response.data);
-          setSubs(response.data);
-        } catch (error: any) {
-          console.log("Error fetching subscriptions", error);
-        }
-      }
-    }
+    // async function getSubs() {
+    //   if (userData) {
+    //     try {
+    //       const response = await axios.get("/api/subscription/get", {
+    //         params: { clerkID: userData.clerkId },
+    //       });
+    //       console.log("subscriptions: ", response.data);
+    //       setSubs(response.data);
+    //     } catch (error: any) {
+    //       console.log("Error fetching subscriptions", error);
+    //     }
+    //   }
+    // }
    
     // getSubs();
   }, [userData]);
 
-  console.log(subs)
+  // console.log(subs)
 
-  useEffect(() => {
-    async function checkAuth() {
-      if (isLoaded && !isSignedIn) {
-        router.push("/sign-in");
-      }
-    }
-    checkAuth();
-  }, [isLoaded, isSignedIn, router]);
+  //------------disabled temporarily
+  // useEffect(() => {
+  //   async function checkAuth() {
+  //     if (isLoaded && !isSignedIn) {
+  //       router.push("/sign-in");
+  //     }
+  //   }
+  //   checkAuth();
+  // }, [isLoaded, isSignedIn, router]);
 
-  if (!isLoaded || !isSignedIn) {
-    return <p className="text-center">Loading...</p>;
-  }
+  // if (!isLoaded || !isSignedIn) {
+  //   return <p className="text-center">Loading...</p>;
+  // }
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-muted">
       <header className="sticky top-0 z-10 bg-background shadow-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/dashboard" className="text-2xl font-bold text-primary">
-            <Image
-              src="/subease-light.svg"
-              alt="logo"
-              width={80}
-              height={50}
-              className="dark:hidden"
-            />
-            <Image
-              src="/subease-dark.svg"
-              alt="logo"
-              width={80}
-              height={50}
-              className="hidden dark:block"
-            />
+          <Link href="/dashboard" className="text-2xl font-semibold text-primary">
+            ottidy.
           </Link>
           <div className="flex items-center justify-center gap-2 md:gap-4">
             <ModeToggle />

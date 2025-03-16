@@ -83,5 +83,5 @@
 }
 
 .bg-text-underline {
-  @apply bg-[#3ECF8E] dark:bg-[#6f42c1]
+  @apply bg-cyan-300 dark:bg-cyan-700
 }

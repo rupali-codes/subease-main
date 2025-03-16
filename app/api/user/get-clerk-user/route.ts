@@ -1,6 +1,5 @@
 import { getAuth, clerkClient } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
-import { dbConnect } from "@/lib/dbConnect";
 
 export async function GET(req: NextRequest) {
   const { userId } = getAuth(req);

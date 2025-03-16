@@ -1,7 +1,6 @@
 import React from 'react'
 import SocialLinks from './SocialLinks'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 
 const Pricing = () => {
   return (
@@ -19,7 +18,7 @@ const Pricing = () => {
           <CardContent className="text-center flex flex-col items-center gap-4">
             <p className="text-4xl font-extrabold">$0</p>
             <p className="text-muted-foreground">
-              While SubEase is completely free, your suggestions and ideas are the real fuel that helps us improve. If you have any feedback or features you'd like to see, we'd love to hear from you!
+              While SubEase is completely free, your suggestions and ideas are the real fuel that helps us improve. If you have any feedback or features you would like to see, we would love to hear from you!
             </p>
             <SocialLinks className='w-8 h-8' />
           </CardContent>

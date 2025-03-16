@@ -19,11 +19,8 @@ const Header = () => {
     <header className="z-30 sticky top-0 transition-all duration-100 ease-out backdrop-blur-3xl">
       <nav className=" shadow-md px-4 lg:px-6 py-2.5 ">
         <div className="p-3 flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-          <Link href="/" className="flex items-center">
-            <Image src='/subease-light.svg' alt='logo' width={80} height={50} className="dark:hidden"/>
-            <Image src='/subease-dark.svg' alt='logo' width={80} height={50} className="hidden dark:block"/>
-
-            
+          <Link href="/" className="flex items-center font-semibold text-2xl">
+            ottidy.            
           </Link>
           <div className="flex items-center lg:order-2">
             <div className="hidden lg:flex items-center gap-2 ">

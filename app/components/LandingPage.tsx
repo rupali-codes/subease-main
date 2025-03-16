@@ -1,6 +1,4 @@
-import { SignInButton } from '@clerk/nextjs'
 import React from 'react'
-import { ModeToggle } from './mode-toggle'
 import Header from './Header'
 import HeroSection from './HeroSection'
 import Features from './Features'

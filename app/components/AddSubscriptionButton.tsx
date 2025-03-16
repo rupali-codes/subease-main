@@ -30,7 +30,6 @@ import {
 } from "@/components/ui/popover";
 import { IoIosAdd } from "react-icons/io";
 import axios from "axios";
-import { AnyArray } from "mongoose";
 
 type SubscriptionFormData = {
   name: string;
@@ -39,7 +38,7 @@ type SubscriptionFormData = {
   currency: string;
   renewalDate: Date;
   billingCycle: string;
-  note: string;
+  note?: string;
 };
 
 export default function AddSubscriptionButton() {
@@ -49,7 +48,6 @@ export default function AddSubscriptionButton() {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
     watch,
     control,
   } = useForm<SubscriptionFormData>();
@@ -63,7 +61,7 @@ export default function AddSubscriptionButton() {
     getCurrentUser()    
   }, [currentUserId])
 
-  const handleOnFormSubmit = async (data:any) => {
+  const handleOnFormSubmit = async (data:SubscriptionFormData) => {
     const { name, category, price, currency, renewalDate, billingCycle, note } = data;
     
     console.log(currentUserId, name, category, price, currency, renewalDate, billingCycle, note)
@@ -80,7 +78,7 @@ export default function AddSubscriptionButton() {
 
   }
 
-  const renewalDate = watch("renewalDate");
+  // const renewalDate = watch("renewalDate");
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>

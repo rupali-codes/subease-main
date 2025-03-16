@@ -12,7 +12,7 @@ export async function PATCH(req: NextRequest) {
   await dbConnect();
 
   try {
-    const updateFields: any = {};
+    const updateFields: Record<string, any> = {};
     if (email !== undefined) updateFields.email = email;
 
     const updatedUser = await User.findOneAndUpdate(

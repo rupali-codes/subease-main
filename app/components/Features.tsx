@@ -19,7 +19,7 @@ const Features = () => {
               </span>
             </h2>
             <p className="font-normal z-10"> {/* Set z-index for paragraph */}
-              SubEase offers a suite of powerful features to help you manage
+              <span className="text-cyan-500 font-semibold">ottidy</span> offers a suite of powerful features to help you manage
               your subscriptions with ease.
             </p>
           </div>
@@ -30,7 +30,7 @@ const Features = () => {
                 <div className="grid gap-1">
                   <h3 className="text-xl font-bold">Effortless Subscription Tracking</h3>
                   <p className="text-muted-foreground">
-                    Keep track of all your subscriptions in one place. With SubEase, you'll never miss a renewal or overspend on services you no longer use.
+                    Keep track of all your subscriptions in one place. With <span className="text-cyan-500 font-semibold">ottidy</span>, you will never miss a renewal or overspend on services you no longer use.
                   </p>
                 </div>
               </li>

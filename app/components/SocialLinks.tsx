@@ -12,13 +12,13 @@ interface SocialProps{
 const SocialLinks = ({className}: SocialProps) => {
   return (
     <div className='flex items-center gap-3'>
-        <Link href='https://linkedin.com/in/ayushb04'>
+        <Link href='/#'>
         <FaLinkedin className={cn(className)} />
         </Link>
-        <Link href='https://twitter.com/ayushfromindia'>
+        <Link href='/#'>
         <FaSquareXTwitter className={cn(className)}  />
         </Link>
-        <a href="mailto:ayushtheking117@gmail.com">
+        <a href="/#">
         <MdEmail className={cn(className)}  />
         </a>
     </div>
